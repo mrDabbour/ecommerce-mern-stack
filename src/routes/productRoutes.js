@@ -3,6 +3,16 @@ const router = express.Router();
 const productController = require('../controllers/productController');
 
 
+
+// Import authentication middleware
+const isAuthenticated = (req, res, next) => {
+  if (req.isAuthenticated()) {
+    return next();
+  }
+  res.status(401).json({ error: 'Unauthorized' });
+};
+
+
 // New route for search functionality
 // http://localhost:3001/api/products/search?query=product1
 router.get('/search', productController.searchProducts);
@@ -24,6 +34,12 @@ router.put('/:id', productController.updateProduct);
 
 // Delete a product by ID
 router.delete('/:id', productController.deleteProduct);
+
+
+// Add authentication middleware to protect routes below
+router.use(isAuthenticated);
+
+
 
 // New route for filtered products
 // Define a new route for testing the filter

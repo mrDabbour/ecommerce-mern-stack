@@ -26,6 +26,19 @@ const productSchema = new mongoose.Schema({
   },
 });
 
+
+const getAllProducts = async (req, res) => {
+    try {
+      const products = await Product.find();
+      res.json(products);
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ error: 'Internal Server Error' });
+    }
+  };
+  
 const Product = mongoose.model('Product', productSchema);
 
-module.exports = Product;
+module.exports = {Product,
+    getAllProducts,
+};
